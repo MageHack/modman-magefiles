@@ -1,0 +1,1 @@
+This module helps generate <a href="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento module.
