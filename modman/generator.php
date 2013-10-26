@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @copyright  Copyright (c) 2013 The Magento Hackathon (UK)
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
+ */
 class MageHack_Shell_Modman_Generator
 {
 
@@ -26,19 +31,14 @@ class MageHack_Shell_Modman_Generator
         if (!isset($matches[1])) {
             return $data;
         }
-        $files = $this->_getOnlyCustomFiles($matches[1]);
+        $files = $matches[1];
         foreach ($files as $file) {
-            $data[] = $this->_filterPath($this->_getTemplateFile($file));
+            $data[] = $this->filterPath($this->_getTemplateFile($file));
         }
         return $data;
     }
 
-    public function _getOnlyCustomFiles($files)
-    {
-        return $files;
-    }
-
-    protected function _filterPath($resourcePath)
+    public function filterPath($resourcePath)
     {
         $baseUrl = str_replace('files.php/', '', Mage::getBaseUrl());
         $correctPath = str_replace($baseUrl, '', $resourcePath);
@@ -80,6 +80,11 @@ class MageHack_Shell_Modman_Generator
         $this->_designConfigXmlStr = file_get_contents($filename);
     }
 
+    public function getDesignConfigXmlFile()
+    {
+        return $this->_designConfigXmlStr;
+    }
+
     public function getMappings()
     {
         $data = array();
@@ -118,26 +123,16 @@ class MageHack_Shell_Modman_Generator
         }
         preg_match_all('#href="(.*)"#', $html, $matches1);
         if (isset($matches1[1])) {
-            $css = array_map(array($this, '_filterPath'), $matches1[1]);
+            $css = array_map(array($this, 'filterPath'), $matches1[1]);
             $data = array_merge($data, $css);
         }
 
         preg_match_all('#src="(.*)"#', $html, $matches2);
         if (isset($matches2[1])) {
-            $js = array_map(array($this, '_filterPath'), $matches2[1]);
+            $js = array_map(array($this, 'filterPath'), $matches2[1]);
             $data = array_merge($data, $js);
         }
         return $data;
-    }
-
-    public function getLocaleFiles()
-    {
-        
-    }
-
-    public function getLayoutUpdateFile($type = 0)
-    {
-        //get admin and frontend layout update file
     }
 
 }
