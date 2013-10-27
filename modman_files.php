@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPAR
 require dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
 
 if (!Mage::isInstalled()) {
-    echo "Application is not installed yet, please complete install wizard first.";
+    echo "Application is not installed yet, please instal Magento first.";
     exit(0);
 }
 Mage::app();
