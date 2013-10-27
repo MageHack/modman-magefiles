@@ -6,6 +6,7 @@
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
 require_once 'generator.php';
+require_once 'helper.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'abstract.php';
 require dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
 
@@ -13,6 +14,7 @@ if (!Mage::isInstalled()) {
     echo "Application is not installed yet, please complete install wizard first.";
     exit(0);
 }
+Mage::app();
 
 class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
 {
@@ -35,6 +37,7 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
         ),
       )
     );
+    protected $_helper = NULL;
 
     public function run()
     {
@@ -49,18 +52,42 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
         }
     }
 
+    protected function _moduleExist()
+    {
+        
+    }
+
     protected function _getFrontLayoutUpdateFile(Mage_Core_Model_Layout_Element $config)
     {
-        return (array) $config->frontend->layout->updates;
+        try {
+            return (array) $config->frontend->layout->updates;
+        } catch (Exception $e) {
+            return array();
+        }
+    }
+
+    protected function _getHelper()
+    {
+        if (!$this->_helper) {
+            $this->_helper = new MageHack_Shell_Modman_Helper();
+        }
+        return $this->_helper;
     }
 
     protected function _getAdminLayoutUpdateFile(Mage_Core_Model_Layout_Element $config)
     {
-        return (array) $config->adminhtml->layout->updates;
+        try {
+            return (array) $config->adminhtml->layout->updates;
+        } catch (Exception $e) {
+            return array();
+        }
     }
 
     protected function _getLocaleFiles(Mage_Core_Model_Layout_Element $config, $moduleName, $area = 'frontend')
     {
+        if (!isset($config->$area->translate->modules)) {
+            return array();
+        }
         $nodes = $config->$area->translate->modules->children();
         $baseLocaleDir = Mage::getBaseDir('locale');
         if (isset($nodes)) {
@@ -73,11 +100,12 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
                         if (!is_readable($file)) {
                             $file = $baseLocaleDir . DS . 'en_US' . DS . $fileName;
                         }
-                        return $this->filterPath($file);
+                        return $this->_getHelper()->filterPath($file);
                     }
                 }
             }
         }
+        return array();
     }
 
     protected function _getAllFiles($moduleName)
@@ -86,29 +114,32 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
         $config = simplexml_load_string($configFile, Mage::getConfig()->getModelClassName('core/layout_element'));
         $frontUpdateFiles = $this->_getFrontLayoutUpdateFile($config);
         $generator = new MageHack_Shell_Modman_Generator();
-        $fileMappings = array();
-        $fileMappings = array_merge($fileMappings, $this->_getDefaultMappings($config, $moduleName));
+        $fileMappings = $this->_getHelper()->mergeArray(array(), $this->_getDefaultMappings($config, $moduleName));
         $frontFileMappings = array();
         if ($frontUpdateFiles) {
             foreach ($frontUpdateFiles as $node) {
                 $generator->setMode('front');
                 $generator->setDesignConfigXmlFile((string) $node->file);
-                $frontFileMappings = array_merge($frontFileMappings, $generator->getMappings());
+                $frontFileMappings = $this->_getHelper()->mergeArray($frontFileMappings, $generator->getMappings());
             }
-            $fileMappings = array_merge($fileMappings, $frontFileMappings);
-            $fileMappings[] = $generator->filterPath($this->_getLocaleFiles($config, $moduleName, 'frontend'));
+            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $frontFileMappings);
+            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $this->_getHelper()->filterPath($this->_getLocaleFiles($config, $moduleName, 'frontend')));
         }
         $adminUpdateFiles = $this->_getAdminLayoutUpdateFile($config);
 
+        $adminFileMappings = array();
         if ($adminUpdateFiles) {
             $generator = new MageHack_Shell_Modman_Generator();
             foreach ($adminUpdateFiles as $node) {
                 $generator->setMode('admin');
                 $generator->setDesignConfigXmlFile((string) $node->file);
-                $adminFileMappings = $generator->getMappings(1);
+                $adminFileMappings = $this->_getHelper()->mergeArray($adminFileMappings, $generator->getMappings(1));
             }
-            $fileMappings[] = $adminFileMappings;
-            $fileMappings[] = $this->filterPath($this->_getLocaleFiles($config, $moduleName, 'admin'));
+            $adminFileMappings = $this->_getHelper()->mergeArray(
+                $adminFileMappings
+                , $this->_getHelper()->filterPath($this->_getLocaleFiles($config, $moduleName, 'admin'))
+            );
+            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $adminFileMappings);
         }
         return $fileMappings;
     }
@@ -123,25 +154,15 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
 
     protected function _getDefaultMappings($config, $moduleName)
     {
-        $data = array();
-        $data[] = $this->_getModuleCoreFiles($moduleName);
-        $data[] = $this->_getLocaleFiles($config, $moduleName);
+        $data = $this->_getHelper()->mergeArray(array(), $this->_getModuleCoreFiles($moduleName));
+        $data = $this->_getHelper()->mergeArray($data, $this->_getLocaleFiles($config, $moduleName));
         return $data;
     }
 
     protected function _getModuleCoreFiles($moduleName)
     {
-        $file = $this->filterPath(dirname(Mage::getConfig()->getModuleDir('etc', $moduleName)));
+        $file = $this->_getHelper()->filterPath(dirname(Mage::getConfig()->getModuleDir('etc', $moduleName)));
         return $file;
-    }
-
-    public function filterPath($resourcePath)
-    {
-        $baseUrl = str_replace('files.php/', '', Mage::getBaseUrl());
-        $correctPath = str_replace($baseUrl, '', $resourcePath);
-        $baseDir = str_replace('files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
-        $correctPath = str_replace($baseDir, '', $correctPath);
-        return preg_replace('#^/#', '', $correctPath);
     }
 
     /**
@@ -154,10 +175,11 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     {
         return <<<USAGE
 Creates modman file mappings to be copied into a modman file
-Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --module_base_dir=""
+Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 Options:
-  --module_name Custom module name (REQUIRED)
-  --custom_path Custom relative path should you be using a different one (OPTIONAL)
+--module_name Custom module name (REQUIRED) e.g Namespace_Modulename
+--prefix  Your module module base directory from Magento root directory
+     
 USAGE;
     }
 

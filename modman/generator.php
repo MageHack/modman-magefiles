@@ -5,12 +5,15 @@
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
+require_once 'helper.php';
+
 class MageHack_Shell_Modman_Generator
 {
 
     protected $_availableModes = array('front', 'admin');
     protected $_defaultMode = 'front';
     protected $_designConfigXmlStr = NULL;
+    protected $_helper = NULL;
 
     protected function _getDesign()
     {
@@ -38,13 +41,17 @@ class MageHack_Shell_Modman_Generator
         return $data;
     }
 
+    protected function _getHelper()
+    {
+        if (!$this->_helper) {
+            $this->_helper = new MageHack_Shell_Modman_Helper();
+        }
+        return $this->_helper;
+    }
+
     public function filterPath($resourcePath)
     {
-        $baseUrl = str_replace('files.php/', '', Mage::getBaseUrl());
-        $correctPath = str_replace($baseUrl, '', $resourcePath);
-        $baseDir = str_replace('files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
-        $correctPath = str_replace($baseDir, '', $correctPath);
-        return preg_replace('#^/#', '', $correctPath);
+        return $this->_getHelper()->filterPath($resourcePath);
     }
 
     public function setMode($mode)
@@ -87,9 +94,8 @@ class MageHack_Shell_Modman_Generator
 
     public function getMappings()
     {
-        $data = array();
-        $data = array_merge($data, $this->getTemplateFiles());
-        $data = array_merge($data, $this->getPageHeadFiles());
+        $data = $this->_getHelper()->mergeArray(array(), $this->getTemplateFiles());
+        $data = $this->_getHelper()->mergeArray($data, $this->getPageHeadFiles());
         return $data;
     }
 
@@ -124,13 +130,13 @@ class MageHack_Shell_Modman_Generator
         preg_match_all('#href="(.*)"#', $html, $matches1);
         if (isset($matches1[1])) {
             $css = array_map(array($this, 'filterPath'), $matches1[1]);
-            $data = array_merge($data, $css);
+            $data = $this->_getHelper()->mergeArray($data, $css);
         }
 
         preg_match_all('#src="(.*)"#', $html, $matches2);
         if (isset($matches2[1])) {
             $js = array_map(array($this, 'filterPath'), $matches2[1]);
-            $data = array_merge($data, $js);
+            $data = $this->_getHelper()->mergeArray($data, $js);
         }
         return $data;
     }
