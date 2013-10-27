@@ -4,7 +4,7 @@ This module helps generate <a target="_blank" href="https://github.com/colinmoll
 Also useful as a way to quickly see all the files used by a Magento module.
 
 
-Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
+Usage: php -f magehack/modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 
 Options:
 --module_name Custom module name (REQUIRED) e.g Namespace_Modulename

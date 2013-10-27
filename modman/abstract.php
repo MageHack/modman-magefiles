@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'abstract.php';
+require_once dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'abstract.php';
 
 abstract class MageHack_Shell_Modman_Abstract extends Mage_Shell_Abstract
 {

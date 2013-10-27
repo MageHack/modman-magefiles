@@ -5,10 +5,11 @@
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
-require_once 'generator.php';
-require_once 'helper.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'abstract.php';
-require dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'generator.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'helper.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'abstract.php';
+
+require dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
 
 if (!Mage::isInstalled()) {
     echo "Application is not installed yet, please complete install wizard first.";
@@ -243,7 +244,7 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     {
         return <<<USAGE
 Generates file mappings for a Modman or Composer Magento module
-Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
+Usage: php -f magehack/modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 Options:
 --module_name Custom module name (REQUIRED) e.g Namespace_ModuleName
 --prefix  Your module module base directory from Magento root directory
