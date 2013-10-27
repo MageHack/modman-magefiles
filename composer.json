@@ -1,0 +1,28 @@
+{
+    "name": "magehack/modman-magefiles",
+    "type": "magento-shell-module",
+    "description": "Creates modman file mappings to be copied into a modman file",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*",
+    },
+    "extra": {
+        "map": [
+            [
+                "modman/generator",
+                "shell/magehack/modman/generator.php"
+            ],
+            [
+                "modman/files",
+                "shell/magehack/modman/files.php"
+            ],
+            [
+                "modman/helper",
+                "shell/magehack/modman/helper.php"
+            ],
+            [
+                "abstract.php",
+                "shell/abstract.php"
+            ]
+        ]
+    }
+}

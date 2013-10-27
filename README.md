@@ -1,6 +1,10 @@
-This module helps generate <a target="_blank" ref="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento module.
+This module helps generate <a target="_blank" href="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento modules.
 
-Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --module_base_dir=""
+Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
+
 Options:
-  --module_name Custom module name (REQUIRED)
-  --custom_path Custom relative path should you be using a different one (OPTIONAL)
+--module_name Custom module name (REQUIRED) e.g Namespace_Modulename
+--prefix  Your module module base directory from Magento root directory
+
+NOTE:
+Does not support Magento shell script modules like this module :)
