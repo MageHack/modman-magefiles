@@ -49,6 +49,10 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     public function run()
     {
         $options    = $this->_getOptions();
+        if(!$options){
+            echo $this->usageHelp();
+            return;
+        }
         $moduleName = $options->getModuleName();
         if(!$this->_moduleExist($moduleName)){
             echo $this->_cliRed(sprintf('Error: could not find specified module %s', $moduleName));
