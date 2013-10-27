@@ -26,12 +26,12 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
      */
     protected $_options = array(
       'module_name' => array(
-        'required' => true,
+        'required'  => true,
         'validator' => array(
           'Zend_Validate_NotEmpty',
         )),
       'prefix' => array(
-        'required' => false,
+        'required'  => false,
         'validator' => array(
           'Zend_Validate_NotEmpty',
         ),
@@ -41,10 +41,10 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
 
     public function run()
     {
-        $options = $this->_getOptions();
+        $options    = $this->_getOptions();
         $moduleName = $options->getModuleName();
-        $prefix = $options->getPrefix();
-        $files = $this->_getAllFiles($moduleName);
+        $prefix     = $options->getPrefix();
+        $files      = $this->_getAllFiles($moduleName);
         if ($prefix) {
             $this->_getFileMappings($files, $prefix);
         } else {
@@ -88,8 +88,8 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
         if (!isset($config->$area->translate->modules)) {
             return array();
         }
-        $nodes = $config->$area->translate->modules->children();
-        $baseLocaleDir = Mage::getBaseDir('locale');
+        $nodes          = $config->$area->translate->modules->children();
+        $baseLocaleDir  = Mage::getBaseDir('locale');
         if (isset($nodes)) {
             foreach ($nodes as $moduleName => $info) {
                 $info = $info->asArray();
@@ -110,11 +110,13 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
 
     protected function _getAllFiles($moduleName)
     {
-        $configFile = file_get_contents(Mage::getModuleDir('etc', $moduleName) . DS . 'config.xml');
-        $config = simplexml_load_string($configFile, Mage::getConfig()->getModelClassName('core/layout_element'));
+        $configFile     = file_get_contents(Mage::getModuleDir('etc', $moduleName) . DS . 'config.xml');
+         $config        = simplexml_load_string(
+                $configFile, Mage::getConfig()->getModelClassName('core/layout_element')
+        );
         $frontUpdateFiles = $this->_getFrontLayoutUpdateFile($config);
-        $generator = new MageHack_Shell_Modman_Generator();
-        $fileMappings = $this->_getHelper()->mergeArray(array(), $this->_getDefaultMappings($config, $moduleName));
+        $generator      = new MageHack_Shell_Modman_Generator();
+        $fileMappings   = $this->_getHelper()->mergeArray(array(), $this->_getDefaultMappings($config, $moduleName));
         $frontFileMappings = array();
         if ($frontUpdateFiles) {
             foreach ($frontUpdateFiles as $node) {
@@ -174,7 +176,7 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     public function usageHelp()
     {
         return <<<USAGE
-Creates modman file mappings to be copied into a modman file
+Generates file mappings for a Modman or Composer Magento module
 Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 Options:
 --module_name Custom module name (REQUIRED) e.g Namespace_Modulename

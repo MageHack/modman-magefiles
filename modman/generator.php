@@ -10,10 +10,10 @@ require_once 'helper.php';
 class MageHack_Shell_Modman_Generator
 {
 
-    protected $_availableModes = array('front', 'admin');
-    protected $_defaultMode = 'front';
-    protected $_designConfigXmlStr = NULL;
-    protected $_helper = NULL;
+    protected $_availableModes      = array('front', 'admin');
+    protected $_defaultMode         = 'front';
+    protected $_designConfigXmlStr  = NULL;
+    protected $_helper              = NULL;
 
     protected function _getDesign()
     {
@@ -28,13 +28,13 @@ class MageHack_Shell_Modman_Generator
 
     public function getTemplateFiles()
     {
-        $data = array();
-        $regex = '#template=[\s]*"(.*)[\s]*"#';
+        $data   = array();
+        $regex  = '#template=[\s]*"(.*)[\s]*"#';
         preg_match_all($regex, $this->_designConfigXmlStr, $matches);
         if (!isset($matches[1])) {
             return $data;
         }
-        $files = $matches[1];
+        $files  = $matches[1];
         foreach ($files as $file) {
             $data[] = $this->filterPath($this->_getTemplateFile($file));
         }
@@ -78,8 +78,8 @@ class MageHack_Shell_Modman_Generator
 
     public function setDesignConfigXmlFile($file)
     {
-        $design = $this->_getDesign();
-        $filename = $design->getLayoutFilename($file);
+        $design     = $this->_getDesign();
+        $filename   = $design->getLayoutFilename($file);
         if (!is_readable($filename)) {
             Mage::throwException(sprintf('Could not find %s'), $filename);
         }
@@ -101,14 +101,17 @@ class MageHack_Shell_Modman_Generator
 
     public function getPageHeadFiles()
     {
-        $data = array();
-        $xml = simplexml_load_string($this->_designConfigXmlStr, Mage::getConfig()->getModelClassName('core/layout_element'));
-        $headNodes = $xml->xpath("//reference[@name='head']");
-        $block = Mage::app()->getLayout()->createBlock('page/html_head');
+        $data   = array();
+        $xml    = simplexml_load_string(
+            $this->_designConfigXmlStr
+            , Mage::getConfig()->getModelClassName('core/layout_element')
+        );
+        $headNodes  = $xml->xpath("//reference[@name='head']");
+        $block      = Mage::app()->getLayout()->createBlock('page/html_head');
         foreach ($headNodes as $headNode) {
             foreach ($headNode as $node) {
                 $method = (string) $node['method'];
-                $args = (array) $node->children();
+                $args   = (array) $node->children();
                 unset($args['@attributes']);
                 foreach ($args as $key => $arg) {
                     foreach ($arg as $subkey => $value) {
@@ -121,22 +124,22 @@ class MageHack_Shell_Modman_Generator
                 }
             }
         }
-        $js = array();
-        $css = array();
-        $html = $block->getCssJsHtml();
+        $js     = array();
+        $css    = array();
+        $html   = $block->getCssJsHtml();
         if (empty($html)) {
             return '';
         }
         preg_match_all('#href="(.*)"#', $html, $matches1);
         if (isset($matches1[1])) {
-            $css = array_map(array($this, 'filterPath'), $matches1[1]);
-            $data = $this->_getHelper()->mergeArray($data, $css);
+            $css    = array_map(array($this, 'filterPath'), $matches1[1]);
+            $data   = $this->_getHelper()->mergeArray($data, $css);
         }
 
         preg_match_all('#src="(.*)"#', $html, $matches2);
         if (isset($matches2[1])) {
-            $js = array_map(array($this, 'filterPath'), $matches2[1]);
-            $data = $this->_getHelper()->mergeArray($data, $js);
+            $js     = array_map(array($this, 'filterPath'), $matches2[1]);
+            $data   = $this->_getHelper()->mergeArray($data, $js);
         }
         return $data;
     }

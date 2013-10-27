@@ -1,7 +1,7 @@
 {
     "name": "magehack/modman-magefiles",
     "type": "magento-shell-module",
-    "description": "Creates modman file mappings to be copied into a modman file",
+    "description": "Generates file mappings for a Modman or Composer Magento module",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
     },
