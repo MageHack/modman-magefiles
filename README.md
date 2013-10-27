@@ -1,29 +1,29 @@
-##Modman MageFiles
-This module helps generate <a target="_blank" href="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento modules.
+##Modman MageFiles    
+This module helps generate <a target="_blank" href="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento modules.    
 
-Also useful to quickly view all the files used by a Magento module.
+Also useful to quickly view all the files used by a Magento module.      
 
 
-Usage: php -f magehack/modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
+Usage: php -f magehack/modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"   
+ 
+Options:    
+--module_name Custom module name (REQUIRED) e.g Namespace_Modulename   
 
-Options:
---module_name Custom module name (REQUIRED) e.g Namespace_Modulename
+--prefix  Your module module base directory from Magento root directory    
 
---prefix  Your module module base directory from Magento root directory
-
-NOTE:
-Does not support Magento shell script modules like this module :)
+NOTE:   
+Does not support Magento shell script modules like this module :)    
 
 ######Known Issues
-1. For some reasons some adminhtml templates return template files from base/default 
-instead of files from default/default
-2.Using composer symlink strategy to download module causes errors, use copy strategy instead
+1. For some reasons some adminhtml templates return template files from base/default    
+instead of files from default/default   
+2.Using composer symlink strategy to download module causes errors, use copy strategy instead    
 
-######@TODO
-Support Library files
-Support image files used in templates
-Support images used in CSS files
-Use Autoloader
+######@TODO  
+Support Library files     
+Support image files used in templates     
+Support images used in CSS files     
+Use Autoloader     
 
-######Author 
-######Bolaji Olubajo <toluolubajo@gmail.com>
+######Author   
+######Bolaji Olubajo <toluolubajo@gmail.com>   
