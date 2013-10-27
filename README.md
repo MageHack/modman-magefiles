@@ -14,6 +14,10 @@ Options:
 NOTE:
 Does not support Magento shell script modules like this module :)
 
+######Known Issues
+1. For some reasons some adminhtml templates return template files from base/default 
+instead of files from default/default
+
 ######@TODO
 Support Library files
 Support image files used in templates
