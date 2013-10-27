@@ -205,13 +205,13 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     protected function _outputMappings($strip, $files, $prefix = '')
     {
         $files = $this->_getHelper()->getDirAndFiles($files);
-        foreach ($files as $file) {
-            $file = str_replace($strip, '', $file);
-            $actual = $file;
+        foreach ($files as $actualfile) {
+            $tempfile = str_replace($strip, '', $actualfile);
+            $actual = $tempfile;
             if (!empty($prefix)) {
                 $actual = preg_replace('#/{2,}#', '/', $prefix . DIRECTORY_SEPARATOR . $actual);
             }
-            echo "$actual    $file" . PHP_EOL;
+            echo "$actual    $actualfile" . PHP_EOL;
         }
     }
 
