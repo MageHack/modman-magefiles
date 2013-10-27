@@ -60,11 +60,12 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
             exit(0);
         }
         $prefix     = $options->getPrefix();
+        $strip      = ($options->getStrip()) ? $options->getStrip() : '';
         $files      = $this->_getAllFiles($moduleName);
         if ($prefix) {
-            $this->_getFileMappings($files, $prefix);
+            $this->_outputMappings($strip, $files, $prefix);
         } else {
-            $this->_getFileMappings($files);
+            $this->_outputMappings($strip, $files);
         }
     }
 
@@ -197,14 +198,15 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
     }
 
     /**
-     * Return module modman file mappings
+     * outputs module modman file mappings
      * @param array $files
      * @param string $prefix
      */
-    protected function _getFileMappings($files, $prefix = '')
+    protected function _outputMappings($strip, $files, $prefix = '')
     {
         $files = $this->_getHelper()->getDirAndFiles($files);
         foreach ($files as $file) {
+            $file = str_replace($strip, '', $file);
             $actual = $file;
             if (!empty($prefix)) {
                 $actual = preg_replace('#/{2,}#', '/', $prefix . DIRECTORY_SEPARATOR . $actual);
@@ -222,7 +224,8 @@ class MageHack_Shell_Modman_Files extends MageHack_Shell_Modman_Abstract
      */
     protected function _getDefaultMappings($config, $moduleName)
     {
-        $data = $this->_getHelper()->mergeArray(array(), $this->_getModuleCoreFiles($moduleName));
+        $data = array("app/etc/modules/$moduleName.xml");
+        $data = $this->_getHelper()->mergeArray($data, $this->_getModuleCoreFiles($moduleName));
         $data = $this->_getHelper()->mergeArray($data, $this->_getLocaleFiles($config, $moduleName));
         return $data;
     }
