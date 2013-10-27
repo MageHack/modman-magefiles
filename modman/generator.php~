@@ -130,13 +130,13 @@ class MageHack_Shell_Modman_Generator
         if (empty($html)) {
             return '';
         }
-        preg_match_all('#href="(.*)"#', $html, $matches1);
+         preg_match_all('#href="(.*?)"#', $html, $matches1);
         if (isset($matches1[1])) {
             $css    = array_map(array($this, 'filterPath'), $matches1[1]);
             $data   = $this->_getHelper()->mergeArray($data, $css);
         }
 
-        preg_match_all('#src="(.*)"#', $html, $matches2);
+        preg_match_all('#src="(.*)?"#', $html, $matches2);
         if (isset($matches2[1])) {
             $js     = array_map(array($this, 'filterPath'), $matches2[1]);
             $data   = $this->_getHelper()->mergeArray($data, $js);

@@ -1,4 +1,8 @@
+##Modman MageFiles
 This module helps generate <a target="_blank" href="https://github.com/colinmollenhour/modman/wiki/Tutorial">modman</a> mapping files for Magento modules.
+
+Also useful as a way to quickly see all the files used by a Magento module.
+
 
 Usage: php -f magehack/modman/files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 
