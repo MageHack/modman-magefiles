@@ -5,9 +5,9 @@
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'generator.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'helper.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'modman' . DIRECTORY_SEPARATOR . 'abstract.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'lib' . DIRECTORY_SEPARATOR . 'generator.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'lib' . DIRECTORY_SEPARATOR . 'helper.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR. 'lib' . DIRECTORY_SEPARATOR . 'abstract.php';
 
 require dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
 

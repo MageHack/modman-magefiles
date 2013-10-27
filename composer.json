@@ -2,27 +2,13 @@
     "name": "magehack/modman-magefiles",
     "type": "magento-shell-module",
     "description": "Generates file mappings for a Modman or Composer Magento module",
+    "authors":[
+        {
+            "name":"Bolaji Olubajo",
+            "email":"toluolubajo@gmail.com"
+        }
+    ],
     "require": {
         "magento-hackathon/magento-composer-installer": "*"
-    },
-    "extra": {
-        "map": [
-            [
-                "modman/abstract.php",
-                "shell/magehack/modman/abstract.php"
-            ],
-            [
-                "modman/generator",
-                "shell/magehack/modman/generator.php"
-            ],
-            [
-                "modman/helper",
-                "shell/magehack/modman/helper.php"
-            ],
-            [
-                "files",
-                "magehack/modman/files.php"
-            ]
-        ]
     }
 }
