@@ -3,7 +3,7 @@
     "type": "magento-shell-module",
     "description": "Generates file mappings for a Modman or Composer Magento module",
     "require": {
-        "magento-hackathon/magento-composer-installer": "*",
+        "magento-hackathon/magento-composer-installer": "*"
     },
     "extra": {
         "map": [
