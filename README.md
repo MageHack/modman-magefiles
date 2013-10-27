@@ -17,11 +17,13 @@ Does not support Magento shell script modules like this module :)
 ######Known Issues
 1. For some reasons some adminhtml templates return template files from base/default 
 instead of files from default/default
+2.Using composer symlink strategy to download module causes errors, use copy strategy instead
 
 ######@TODO
 Support Library files
 Support image files used in templates
 Support images used in CSS files
+Use Autoloader
 
 ######Author 
 ######Bolaji Olubajo <toluolubajo@gmail.com>
