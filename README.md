@@ -14,5 +14,10 @@ Options:
 NOTE:
 Does not support Magento shell script modules like this module :)
 
-###### Author 
-Bolaji Olubajo <toluolubajo@gmail.com>
+######@TODO
+Support Library files
+Support image files used in templates
+Support images used in CSS files
+
+######Author 
+######Bolaji Olubajo <toluolubajo@gmail.com>
