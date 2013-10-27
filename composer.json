@@ -1,6 +1,6 @@
 {
     "name": "magehack/modman-magefiles",
-    "type": "magento-shell-module",
+    "type": "magento-module",
     "description": "Generates file mappings for a Modman or Composer Magento module",
     "authors":[
         {
