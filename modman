@@ -1,4 +1,3 @@
-lib/abstract.php        shell/magehack/lib/abstract.php
 lib/generator.php       shell/magehack/lib/generator.php
 lib/helper.php          shell/magehack/lib/helper.php
-modman_files.php        shell/magehack/modman_files.php
+modman_files.php        shell/modman_files.php
