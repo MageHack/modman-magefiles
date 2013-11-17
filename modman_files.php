@@ -6,6 +6,7 @@
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
 include 'magehack' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'helper.php';
+include 'magehack' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'generator.php';
 include 'abstract.php';
 
 
