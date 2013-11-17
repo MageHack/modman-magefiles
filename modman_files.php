@@ -360,7 +360,7 @@ class MageHack_Shell_Modman_Files extends Mage_Shell_Abstract
     {
         return <<<USAGE
 Generates file mappings for a Modman or Composer Magento module
-Usage: php -f magehack/modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
+Usage: php -f modman_files.php -- --module_name=Mage_Catalog --prefix="mycustom_dir"
 Options:
 --module_name Custom module name (REQUIRED) e.g Namespace_ModuleName
 --prefix  Your module module base directory from Magento root directory
