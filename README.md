@@ -24,4 +24,4 @@ Support image files used in templates
 Support images used in CSS files      
 
 ######Author   
-###Bolaji Olubajo <toluolubajo@gmail.com>   
+##########Bolaji Olubajo <toluolubajo@gmail.com>   
