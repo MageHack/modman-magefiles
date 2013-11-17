@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author Bolaji Olubajo <bolaji.tolulope@redboxdigital.com>
  */
-include 'modman-magefiles' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'helper.php';
+include 'magehack' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'helper.php';
 include 'abstract.php';
 
 
