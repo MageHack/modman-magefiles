@@ -17,9 +17,9 @@ class MageHack_Shell_Modman_Helper
      */
     public function filterPath($resourcePath)
     {
-        $baseUrl = str_replace('files.php/', '', Mage::getBaseUrl());
+        $baseUrl = str_replace('modman_files.php/', '', Mage::getBaseUrl());
         $correctPath = str_replace($baseUrl, '', $resourcePath);
-        $baseDir = str_replace('files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
+        $baseDir = str_replace('modman_files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
         $correctPath = str_replace($baseDir, '', $correctPath);
         return preg_replace('#^/#', '', $correctPath);
     }
