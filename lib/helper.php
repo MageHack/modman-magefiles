@@ -12,15 +12,15 @@ class MageHack_Shell_Modman_Helper
 
     /**
      * Returns file relative path to Magento root directory
-     * @param type $resourcePath
-     * @return type
+     * @param string $resourcePath
+     * @return string
      */
     public function filterPath($resourcePath)
     {
-        $baseUrl        = str_replace('modman_files.php/', '', Mage::getBaseUrl());
-        $correctPath    = str_replace($baseUrl, '', $resourcePath);
-        $baseDir        = str_replace('modman_files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
-        $correctPath    = str_replace($baseDir, '', $correctPath);
+        $baseUrl     = str_replace('modman_files.php/', '', Mage::getBaseUrl());
+        $correctPath = str_replace($baseUrl, '', $resourcePath);
+        $baseDir     = str_replace('modman_files.php' . DIRECTORY_SEPARATOR, '', Mage::getBaseDir());
+        $correctPath = str_replace($baseDir, '', $correctPath);
         return preg_replace('#^/#', '', $correctPath);
     }
 
@@ -47,9 +47,9 @@ class MageHack_Shell_Modman_Helper
      */
     public function getDirAndFiles($files)
     {
-        $dirs   = array();
-        $maps   = array();
-        $files  = array_unique($files);
+        $dirs  = array();
+        $maps  = array();
+        $files = array_unique($files);
         foreach ($files as $file) {
             $dirname = dirname(Mage::getBaseDir() . DIRECTORY_SEPARATOR . $file);
             $dirs[$dirname][] = $file;

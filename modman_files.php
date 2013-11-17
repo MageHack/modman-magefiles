@@ -37,7 +37,8 @@ class MageHack_Shell_Modman_Files extends Mage_Shell_Abstract
         ),
       )
     );
-    protected $_helper = NULL;
+    protected $_helper          = NULL;
+    protected $_fileMappings    = array();
 
     protected $options = NULL;
 
@@ -160,36 +161,37 @@ class MageHack_Shell_Modman_Files extends Mage_Shell_Abstract
          $config        = simplexml_load_string(
             $configFile, Mage::getConfig()->getModelClassName('core/layout_element')
         );
-        $frontUpdateFiles = $this->_getFrontLayoutUpdateFile($config);
-        $generator      = new MageHack_Shell_Modman_Generator();
-        $fileMappings   = $this->_getHelper()->mergeArray(array(), $this->_getDefaultMappings($config, $moduleName));
-        $frontFileMappings = array();
+        $frontUpdateFiles   = $this->_getFrontLayoutUpdateFile($config);
+        $generator          = new MageHack_Shell_Modman_Generator();
+        $this->_addFilesToMappings($this->_getDefaultMappings($config, $moduleName));
+        $frontFileMappings  = array();
         if ($frontUpdateFiles) {
             foreach ($frontUpdateFiles as $node) {
                 $generator->setMode('front');
+                $this->_addFilesToMappings($generator->getDesign()->getLayoutFilename((string) $node->file));
                 $generator->setDesignConfigXmlFile((string) $node->file);
                 $frontFileMappings = $this->_getHelper()->mergeArray($frontFileMappings, $generator->getMappings());
             }
-            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $frontFileMappings);
-            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $this->_getHelper()->filterPath($this->_getLocaleFiles($config, $moduleName, 'frontend')));
+            $this->_addFilesToMappings($frontFileMappings);
+            $this->_addFilesToMappings($this->_getHelper()->filterPath($this->_getLocaleFiles($config, $moduleName, 'frontend')));
         }
-        $adminUpdateFiles = $this->_getAdminLayoutUpdateFile($config);
-
-        $adminFileMappings = array();
+        $adminUpdateFiles   = $this->_getAdminLayoutUpdateFile($config);
+        $adminFileMappings  = array();
         if ($adminUpdateFiles) {
-            $generator = new MageHack_Shell_Modman_Generator();
+            $generator      = new MageHack_Shell_Modman_Generator();
             foreach ($adminUpdateFiles as $node) {
                 $generator->setMode('admin');
+                $this->_addFilesToMappings($generator->getDesign()->getLayoutFilename((string) $node->file));
                 $generator->setDesignConfigXmlFile((string) $node->file);
-                $adminFileMappings = $this->_getHelper()->mergeArray($adminFileMappings, $generator->getMappings(1));
+                $this->_addFilesToMappings($generator->getMappings(1));
             }
             $adminFileMappings = $this->_getHelper()->mergeArray(
                 $adminFileMappings
                 , $this->_getHelper()->filterPath($this->_getLocaleFiles($config, $moduleName, 'admin'))
             );
-            $fileMappings = $this->_getHelper()->mergeArray($fileMappings, $adminFileMappings);
+            $this->_addFilesToMappings($adminFileMappings);
         }
-        return $fileMappings;
+        return $this->_fileMappings;
     }
 
     /**
@@ -241,6 +243,18 @@ class MageHack_Shell_Modman_Files extends Mage_Shell_Abstract
         return (empty($value) || !(int) $value > 0);
     }
 
+    protected function  _addFilesToMappings($fileName)
+    {
+        if(!is_array($fileName)){
+            $fileName = $this->_getHelper()->filterPath($fileName);
+        }
+        if(empty($fileName)){
+            return;
+        }
+        $this->_fileMappings = $this->_getHelper()->mergeArray($this->_fileMappings, $fileName);
+        return $this->_fileMappings;
+    }
+    
     /**
      * Return array of CLI options
      *
@@ -374,3 +388,4 @@ USAGE;
 
 $shell = new MageHack_Shell_Modman_Files();
 $shell->run();
+

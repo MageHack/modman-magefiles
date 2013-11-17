@@ -29,6 +29,11 @@ class MageHack_Shell_Modman_Generator
         }
         return $design;
     }
+    
+    public function getDesign()
+    {
+        return $this->_getDesign();
+    }
 
     /**
      * Return module template files
@@ -188,3 +193,4 @@ class MageHack_Shell_Modman_Generator
     }
 
 }
+
